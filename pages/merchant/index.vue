@@ -25,6 +25,7 @@
                 <button class="standart-btn yellow-standart-button merchant-index-add-btn" @click='$router.push("/merchant/add")'>Создать</button>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -37,9 +38,9 @@ export default {
         merchants: []
     }),
     methods: {
-        inMerchant({name}) {
-            localStorage.setItem('merchantName', name)
-            this.$router.push("/merchant/orders")
+        inMerchant({name, id}) {
+            localStorage.setItem('merchant', JSON.stringify({merchantName: name, merchantId: id}))
+            this.$router.push("/merchant/orders/sources")
         }
     },
     async mounted() {

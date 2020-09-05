@@ -4,12 +4,14 @@ export default {
         "Content-Type": "application/json",
         "Accept": "application/json",
     },
+    merchant: {
+        id: () => JSON.parse(localStorage.getItem('merchant')).merchantId 
+    },
     request: async (url, method='GET', headers, body = null) => {
 
         if(method === 'POST') {
             const data = await ( await (fetch(url, {
                 method,
-                credential: 'include',
                 headers,
                 body: JSON.stringify(body)
             }))).json()

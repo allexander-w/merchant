@@ -15,7 +15,7 @@
         <div class="merch-header-dropdowns">
             <div class="merch-header-dropdown-cash-wrapper" v-click-outside="hideCash">
                 <div class="merch-header-dropdown-cash" :class="{'active-dropdown': isOpenCash}"  @click="isOpenCash = true">
-                    <i class="fas fa-tenge dropdown-icon"></i> <span class="merch-header-dropdown-text">Баланс: 35 000 Т </span> <i class="fas fa-caret-down"></i>
+                    <i class="fas fa-tenge dropdown-icon"></i> <span class="merch-header-dropdown-text">Баланс: {{balance}} Т </span> <i class="fas fa-caret-down"></i>
                 </div>
                 <div class="dropdown-cash-body" :class="{'active-dropdown': isOpenCash}" v-show='isOpenCash'>
                     <div class="dropdown-cash-orders dropdown-cash-block" 
@@ -44,23 +44,17 @@
                     <i class="far fa-id-card-alt dropdown-icon"></i><span class="merch-header-dropdown-text"> {{merchantName || 'Название'}} </span> <i class="fas fa-caret-down"></i>
                 </div>
                 <div class="dropdown-name-body" :class="{'active-dropdown': isOpenName}" v-show='isOpenName'>
-                    <div class="dropdown-cash-orders dropdown-cash-block" 
-                        v-for="(dropdown, index) in dropdownData"
-                        :key = 'index'
+                    <div class="dropdown-name-body-item"
+                        v-for="(item, index) in userData"
+                        :key='index'
+                        @click='$router.push(item.path)'
                     >
-                        <div class="dropdown-cash-orders-wrapper">
-                            <p class="dropdown-cash-orders-text">
-                                {{dropdown.name}}: {{dropdown.used}} из {{dropdown.total}}
-                            </p> 
-                            <div class="dropdown-cash-orders-progressbar">
-                                <div class="dropdown-cash-orders-progressbar-active" :style='`width: ${ 181 * ( (dropdown.used / (dropdown.total / 100)) / 100 ) }px`'>
-                                </div>
-                            </div>
-                        </div>
+                        {{item.name}}
                     </div>
-                    <div class="dropdown-cash-block dropdown-add">
-                        Пополнить счет
+                    <div class="dropdown-name-body-item last-btn-dropdown" @click='$router.push("/merchant")'>
+                        Сменить мерчант
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -76,6 +70,10 @@ export default {
             {id: 1, name: 'Заказы', active: true, path: '/merchant/orders', exact: true},
             {id: 2, name: 'Источники', active: false, path: '/merchant/orders/sources', exact: false},
         ],
+        userMenu: [
+            {id: 1, name: 'Профиль', active: true, path: '/merchant/user', exact: true},
+            {id: 2, name: 'Ключи API', active: false, path: '/merchant/user/apikeys', exact: false},
+        ],
         partnersMenu: [
             {id: 1, name: 'Клиенты', active: true, path: '/merchant/partners', exact: true},
             {id: 2, name: 'История операций', active: false, path: '/merchant/partners/history', exact: false},
@@ -87,6 +85,10 @@ export default {
             {id: 2, name: 'Товары', used: 2456, total: 5000},
             {id: 3, name: 'Доставки', used: 246, total: 500}
         ],
+        userData: [
+            {id: 1, name: 'Профиль компании', path: '/merchant/user'},
+            {id: 2, name: 'Баланс и платежи', path: '/merchant/user'},
+        ],
         isOpenCash: false,
         isOpenName: false,
         balance: 0
@@ -96,12 +98,13 @@ export default {
     },
     computed: {
         merchantName() {
-            return localStorage.getItem('merchantName')
+            return JSON.parse(localStorage.getItem('merchant')).merchantName
         },
         menu() {
             
             if ( this.$route.name.includes('merchant-orders') ) { return this.ordersMenu }
             if ( this.$route.name.includes('merchant-partners') ) { return this.partnersMenu }
+            if ( this.$route.name.includes('merchant-user') ) { return this.userMenu }
 
             return this.ordersMenu
         }
@@ -119,6 +122,9 @@ export default {
         hideName() {
             this.isOpenName = false
         }
+    },
+    async mounted() {
+        this.balance = await (await this.$store.dispatch('merchants/MERCHANT')).data[0].balance
     }
 }
 </script>
@@ -182,6 +188,7 @@ export default {
         border-left: 1px solid rgba(#0E6CDD, .15);
     }
     &-dropdown-name {
+        
         &-wrapper {
             position: relative;
             min-width: 297px;
@@ -232,10 +239,24 @@ export default {
 .dropdown-name-body {
     position: absolute;
     z-index: 2;
-    min-height: 280px;
+    min-height: 140px;
     min-width: inherit;
     background-color: #fff;
     box-shadow: 0px 0px 40px rgba(51, 51, 51, 0.08);
+    padding-bottom: 12px;
+    &-item{
+            height: 50px;
+            cursor: pointer;
+            padding-left: 32px;
+            display: flex;
+            align-items: center;
+            color: #333333;
+            transition: .3s ease;
+
+            &:hover {
+                color: #005CCC;
+            }
+        }
 }
 .active-dropdown {
     border: 0px solid #fff;
@@ -250,5 +271,8 @@ export default {
     font-size: 16px;
     color: #005CCC;
     cursor: pointer;
+}
+.last-btn-dropdown {
+    border-top: 1px solid rgba(#0E6CDD, .1);
 }
 </style>

@@ -8,13 +8,13 @@
             <div class="sources-card" 
                 v-for = '(source, index) in sources'
                 :key= 'index'
-                @click = 'plug(source)'
+                
             >   
-                <img :src="require(`~/assets/img/${source.logo}.svg`)" alt="" class="sources-card-logo">
+                <img :src="require(`~/assets/img/${source.code}.svg`)" alt="" class="sources-card-logo">
 
-                <p class="sources-card-desc">{{source.desc}}</p>
-                <button class="standart-btn sources-card-btn" :class="{'yellow-standart-button': source.button === 'yellow',  'blue-standart-button': source.button === 'blue'}">{{source.button === 'yellow' ? 'Подключить' : 'Настроить'}}</button>
-                <div class="sources-card-indicator" v-if='source.turn'>
+                <p class="sources-card-desc">{{source.description}}</p>
+                <button @click = 'plug(source)' class="standart-btn sources-card-btn" :class="{'yellow-standart-button': !source.enabled,  'blue-standart-button': source.enabled}">{{!source.enabled ? 'Подключить' : 'Настроить'}}</button>
+                <div class="sources-card-indicator" v-if='source.enabled'>
                     <p>Подключен</p>
                 </div>
             </div>
@@ -29,16 +29,16 @@ export default {
     middleware: ['auth', 'merchant'],
     layout: 'main',
     data: () => ({
-        sources: [
-            {id: 1, logo: 'kaspicard', turn: false, desc: 'Обрабатывайте заказы из Kaspi.kz в вашей CRM-системе.', button: 'yellow'},
-            {id: 2, logo: 'kaspicard', turn: true, desc: 'Обрабатывайте заказы из Kaspi.kz в вашей CRM-системе.', button: 'blue'},
-            {id: 3, logo: 'kaspicard', turn: false, desc: 'Обрабатывайте заказы из Kaspi.kz в вашей CRM-системе.', button: 'yellow'},
-        ]
+        sources: []
     }),
     methods: {
         plug(source) {
-            source.turn ? console.log('Настройки') : this.$router.push({ name: `merchant-orders-sources-id` , params: { id: source.id, sourceId: source.id}})
+            source.enabled ? this.$router.push({ name: `merchant-orders-sources-id` , params: { id: source.id, propertyId: source.properties.id, sourceId: source.id, params: source.properties.params, token: source.properties.token}}) : this.$router.push({ name: `merchant-orders-sources-id` , params: { id: source.id, sourceId: source.id}})
         }
+    },
+    async mounted() { 
+        this.sources = await (await this.$store.dispatch('markets/GET_MARKETS')).data
+        console.log(this.sources)
     }
 }
 </script>

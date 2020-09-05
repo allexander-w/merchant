@@ -1,5 +1,12 @@
 
 export default {
+  render: {
+    // working:
+   injectScripts: process.env.NODE_ENV === 'development'
+
+   // HMR not working:
+   // injectScripts: false,
+  },
   /*
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode

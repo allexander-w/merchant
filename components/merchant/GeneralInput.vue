@@ -1,6 +1,6 @@
 <template>
     <div class="general-input">
-            <input :type="inputType" @focus='onFocus' v-bind="classKey" @blur='onBlur' class="general-input-self" :value = 'vModel' @change='postModel'>
+            <input :disabled='dis' :type="inputType" @focus='onFocus' v-bind="classKey" @blur='onBlur' class="general-input-self" :value = 'vModel' @change='postModel'>
             <p @click='activateForm' class="general-input-placeholder blur-placeholder" :class='{"active-placeholder": vModel}' v-bind="classKey">
                 {{placeholder}} <i class="far fa-question-circle" v-if="iconInfo && needInfo"></i>
             </p>
@@ -42,6 +42,10 @@ export default {
         func: {
             type: Boolean,
             default:  () => true
+        },
+        dis: {
+            type: Boolean,
+            default: false
         }
     },
     data: () => ({
