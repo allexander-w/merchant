@@ -3,31 +3,38 @@
         <div class="services-block"
             v-for='(service,index) in services'
             :key = 'index'
-            :style ='{backgroundColor: `rgba(${service.color}, .06`}'
+            :style ='{
+                "--bg": `rgba(${service.color}, .06`,
+                "--bghover": `rgba(${service.color}, .1`
+            }'
         >
             <div class="service-soon" v-if = 'service.isSoon'>
                 <p>Скоро</p>
             </div>
             <img :src="require(`../assets/img/${service.logo}.svg`)" alt="" v-if='!service.nologo'>
         </div>
-       
-        <div class="services-block-add">
-            <div class="services-block-dots">
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
 export default {
-    data: () => ({
-        services: [
-            {logo: 'kaspi', color: '239, 70, 53', isSoon: true, nologo: false},
-            {logo: '#', color: '65, 104, 158', isSoon: false, nologo: true},
-            {logo: '#', color: '65, 104, 158', isSoon: false, nologo: true},
-            {logo: '#', color: '65, 104, 158', isSoon: false, nologo: true},
-            {logo: '#', color: '65, 104, 158', isSoon: false, nologo: true},
-        ]
-    })
+
+    props: {
+        services: {
+            type: Array,
+            default: () => []
+        }
+    }
 }
 </script>
+
+<style lang="scss">
+
+.services-block {
+    background-color: var(--bg);
+    transition: .3s ease-out;
+}
+.services-block:hover {
+    background-color: var(--bghover);
+}
+</style>

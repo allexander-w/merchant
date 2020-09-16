@@ -144,6 +144,12 @@ a, a:visited, a:hover, a:active {
     }
     &-fast-start {
       padding: 88px 0;
+      background-image: url('../assets/img/dashline.png');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: 0 262px;
+      background-color: #fff;
+      
   
       &-title {
         margin-bottom: 24px;
@@ -220,7 +226,7 @@ a, a:visited, a:hover, a:active {
             justify-content: space-between;
         }
         &-desc {
-            padding: 8px 0 24px 0;
+            height: 48px;
             transition: .5s;
         }
         &-description {
@@ -323,12 +329,7 @@ a, a:visited, a:hover, a:active {
     font-size: 24px;
     margin-right: 24px;
 }
-.image_up {
-    width: 832px;
-    height: 32px;
-    background-color: rgba(#0E65DD, 0.1);
-}
-.image_body {
+.image-body {
     width: 832px;
     height: 472px;
     background-color: rgba(#0E65DD, 0.06);
@@ -336,11 +337,13 @@ a, a:visited, a:hover, a:active {
 .order-view {
     min-width: 100%;
     display: flex;
-    margin-right: 10%;
     justify-content: space-between;
     min-height: 656px;
     align-items: center;
-    transition: .8s;
+    position: absolute;
+    left: 0;
+    transition: left .8s ease;
+    
 
     &-title {
         margin-bottom: 24px;
@@ -355,6 +358,8 @@ a, a:visited, a:hover, a:active {
 .order-view-slider {
     display: flex;
     transition: .8s;
+    position: relative;
+    min-height: 656px;
 }
 .order-view-wrapper {
     max-width: calc(64px * 9);
@@ -585,7 +590,6 @@ a, a:visited, a:hover, a:active {
     justify-content: center;
     &:nth-child(3n) {
         margin: 0 30px 0 0;
-        background-color: red;
     }
     &-add {
         width: 256px;
@@ -661,11 +665,13 @@ a, a:visited, a:hover, a:active {
 .main-layout-content {
     position: relative;
     overflow-y: auto;
+    min-height: 100vh;
+    background-color: #F1F6FD;
     &-wrapper {
         position: absolute;
-        background-color: #F1F6FD;
+        
         width: 100%;
-        min-height: 100vh;
+       
     }
 }
 .header-navigation-item {
@@ -745,6 +751,10 @@ a, a:visited, a:hover, a:active {
         background: #FFCA00;
     }
     
+}
+.validate-warning {
+    font-size: 13px;
+    margin-top: -32px;
 }
   .container {
     margin: 0 auto;

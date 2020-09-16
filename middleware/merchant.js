@@ -1,3 +1,3 @@
 export default function ({redirect}) {
-    if (!localStorage.getItem('merchantName')) { return redirect('/merchant?message="mustEnterTheMerchant"') }
+    if (!JSON.parse(localStorage.getItem('merchant')).merchantName) { return redirect('/merchant?message="mustEnterTheMerchant"') }
 }

@@ -43,7 +43,11 @@
 <script>
 export default {
     layout: 'main',
-    middleware: ['auth', 'merchant']
+    middleware: ['auth', 'merchant'],
+    async mounted() {
+        // const data = await this.$store.dispatch('partners/GET_PARTNERS')
+        // console.log(data)
+    }
 }
 </script>
 

@@ -15,17 +15,17 @@
         <div class="merch-header-dropdowns">
             <div class="merch-header-dropdown-cash-wrapper" v-click-outside="hideCash">
                 <div class="merch-header-dropdown-cash" :class="{'active-dropdown': isOpenCash}"  @click="isOpenCash = true">
-                    <i class="fas fa-tenge dropdown-icon"></i> <span class="merch-header-dropdown-text">Баланс: {{balance}} Т </span> <i class="fas fa-caret-down"></i>
+                    <i class="fas fa-tenge dropdown-icon"></i> <span class="merch-header-dropdown-text">Баланс: {{balance.toString() | cash}} Т </span> <i class="fas fa-caret-down"></i>
                 </div>
                 <div class="dropdown-cash-body" :class="{'active-dropdown': isOpenCash}" v-show='isOpenCash'>
-                    <div class="dropdown-cash-orders dropdown-cash-block" 
+                    <div class="dropdown-cash-orders dropdown-cash-block"
                         v-for="(dropdown, index) in dropdownData"
                         :key = 'index'
                     >
                         <div class="dropdown-cash-orders-wrapper">
                             <p class="dropdown-cash-orders-text">
                                 {{dropdown.name}}: {{dropdown.used}} из {{dropdown.total}}
-                            </p> 
+                            </p>
                             <div class="dropdown-cash-orders-progressbar">
                                 <div class="dropdown-cash-orders-progressbar-active" :style='`width: ${ 181 * ( (dropdown.used / (dropdown.total / 100)) / 100 ) }px`'>
                                 </div>
@@ -35,10 +35,10 @@
                     <div class="dropdown-cash-block dropdown-add">
                         Пополнить счет
                     </div>
-                    
+
                 </div>
             </div>
-            
+
             <div class="merch-header-dropdown-name-wrapper" v-click-outside="hideName">
                 <div class="merch-header-dropdown-name" :class="{'active-dropdown': isOpenName}"  @click="isOpenName = true">
                     <i class="far fa-id-card-alt dropdown-icon"></i><span class="merch-header-dropdown-text"> {{merchantName || 'Название'}} </span> <i class="fas fa-caret-down"></i>
@@ -54,7 +54,7 @@
                     <div class="dropdown-name-body-item last-btn-dropdown" @click='$router.push("/merchant")'>
                         Сменить мерчант
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@ export default {
             return JSON.parse(localStorage.getItem('merchant')).merchantName
         },
         menu() {
-            
+
             if ( this.$route.name.includes('merchant-orders') ) { return this.ordersMenu }
             if ( this.$route.name.includes('merchant-partners') ) { return this.partnersMenu }
             if ( this.$route.name.includes('merchant-user') ) { return this.userMenu }
@@ -138,7 +138,7 @@ export default {
     border-bottom: 1px solid rgba(#0E6CDD, .15);
     background-color: #F1F6FD;
 
-   
+
     &-links {
         display: flex;
         padding-left: 40px;
@@ -150,14 +150,14 @@ export default {
         justify-content: center;
         cursor: pointer;
         color: #333333;
-        
+
         padding: 0 16px;
         margin-right: 24px;
         &:last-child{
             margin-right: 0;
         }
     }
-    
+
     &-dropdowns {
         display: flex;
     }
@@ -188,7 +188,7 @@ export default {
         border-left: 1px solid rgba(#0E6CDD, .15);
     }
     &-dropdown-name {
-        
+
         &-wrapper {
             position: relative;
             min-width: 297px;
@@ -220,10 +220,10 @@ export default {
             background: rgba(#0E6CDD, .15);
             border-radius: 2px;
             &-active {
-               
+
                 height: 5px;
                 background: #0E6CDD;
-                border-radius: 2px; 
+                border-radius: 2px;
             }
         }
     }

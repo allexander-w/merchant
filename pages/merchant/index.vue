@@ -1,15 +1,17 @@
 <template>
     <div class="merchant-index">
         <div class="merchant-title merchant-index-title">Ваши мерчанты: </div>
-        
+
         <div class="merchant-index-wrapper">
-            <div class="merchant-index-card" 
+            <div class="merchant-index-card"
                 v-for='(merchant, index) in merchants'
                 :key = 'index'
-                @click='inMerchant(merchant)'
+
             >
                 <img src="~/assets/img/B24.svg" alt="" class="merchant-index-card-logo">
-                <div class="merchant-index-card-title">
+                <div class="merchant-index-card-title"
+                    @click='inMerchant(merchant)'
+                >
                     {{merchant.name}}
                 </div>
                 <p class="merchant-index-card-balance">
@@ -19,10 +21,12 @@
                     Последняя выгрузка: {{$convert(merchant.updated_at)}}
                 </p>
             </div>
-            
+
             <div class="merchant-index-add">
                 <p class="merchant-index-add-text">Создайте мерчант и превратите свою CRM в центр интернет-продаж!</p>
-                <button class="standart-btn yellow-standart-button merchant-index-add-btn" @click='$router.push("/merchant/add")'>Создать</button>
+                <nuxt-link to='/merchant/add'>
+                    <button class="standart-btn yellow-standart-button merchant-index-add-btn">Создать</button>
+                </nuxt-link>
             </div>
         </div>
 
@@ -46,7 +50,14 @@ export default {
     async mounted() {
         this.merchants = []
         const data = await this.$store.dispatch('merchants/GET_MERCHANTS')
-        this.merchants = data.data[0].merchants
+
+        data.status === 'success'
+            ? this.merchants = data.data[0].merchants
+            : (
+                localStorage.clear(),
+                this.$router.push('/signin')
+              )
+
     }
 }
 </script>
@@ -73,7 +84,7 @@ export default {
             color: #333333;
             display: -webkit-box;
             -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical; 
+            -webkit-box-orient: vertical;
              overflow: hidden;
         }
 

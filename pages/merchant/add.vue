@@ -41,8 +41,7 @@ export default {
             }
             console.log(formData)
             const data = await this.$store.dispatch('merchants/CREATE_MERCHANT', formData)
-            console.log(data)
-            this.$router.push('/merchant')
+            data.status === 'success' ? this.$router.push('/merchant') : console.log('Ошибка')
         } 
     },
     computed: {

@@ -30,4 +30,10 @@ export default {
     color: #005CCC;
     cursor: pointer;
 }
+.fast-start-step-number {
+    display: inline-block;
+    background-color: #fff;
+    padding: 0 8px;
+    margin: 0 -8px;
+}
 </style>

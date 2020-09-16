@@ -1,5 +1,5 @@
 <template>
-    <div class="general-input">
+    <div class="general-input" :class="{'general-input-invalid': valid}">
             <input :disabled='dis' :type="inputType" @focus='onFocus' v-bind="classKey" @blur='onBlur' class="general-input-self" :value = 'vModel' @change='postModel'>
             <p @click='activateForm' class="general-input-placeholder blur-placeholder" :class='{"active-placeholder": vModel}' v-bind="classKey">
                 {{placeholder}} <i class="far fa-question-circle" v-if="iconInfo && needInfo"></i>
@@ -46,17 +46,21 @@ export default {
         dis: {
             type: Boolean,
             default: false
+        },
+        valid: {
+            type: Boolean,
+            default: false
         }
     },
     data: () => ({
-       innerModel: '',          
-       iconInfo: true 
+       innerModel: '',
+       iconInfo: true
     }),
     computed: {
       classKey(){
-          return {"data-key": `input${this.numberKey}`} 
+          return {"data-key": `input${this.numberKey}`}
       }
-      
+
     },
     methods: {
         postModel(e) {
@@ -92,7 +96,7 @@ export default {
             })
         },
         onFocus() {
-            
+
             const placeholder = document.querySelectorAll('.general-input-placeholder')
             placeholder.forEach(item => {
                 if(item.getAttribute('data-key') === `input${this.numberKey}`){
@@ -101,10 +105,10 @@ export default {
             })
 
             this.iconInfo = true
-            
+
         },
         onBlur() {
-            
+
             if (this.vModel) {
                 return
             }
@@ -134,6 +138,9 @@ export default {
     padding: 0 24px;
     position: relative;
     background-color: #fff;
+    &-invalid {
+      border: 1px solid red;
+    }
     &-btn {
         margin-right: -16px;
         height: 40px;
@@ -151,9 +158,9 @@ export default {
         color: rgba(#005CCC, .5);
         transition: .3s ease;
         z-index: 2;
-        
+
     }
-    
+
     &:focus-within {
         border: 1px solid rgba(#0E6CDD, .5);
         .general-input-placeholder {
@@ -184,7 +191,7 @@ export default {
         .general-input-icon {
             color: rgba(0, 92, 204, 1);
         }
-        
+
     }
 }
 

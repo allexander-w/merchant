@@ -8,7 +8,7 @@
             <button class="standart-btn merchant-add-btn"><i class="fal fa-plus"></i> Добавить </button>
         </div>
 
-        <div class="merchant-table">    
+        <div class="merchant-table">
             <table>
                 <thead>
                     <tr>
@@ -21,30 +21,33 @@
                         <td class="merchant-table-unload-head">Выгружен</td>
                         <td class="merchant-table-unload-head">Завершен</td>
                         <td class="merchant-table-button-head">-</td>
-                        
+
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>230967843</td>
-                        <td>Заказ №123456789</td>
-                        <td>Kaspi</td>
-                        <td>22.01.2019</td>
-                        <td>На подписании</td>
-                        <td>999 999 ₸</td>
-                        <td class="merchant-table-unload"><i class="fal fa-check check-icon"></i></td>
-                        <td class="merchant-table-unload"><i class="fal fa-check check-icon"></i></td>
+                    <tr
+                        v-for="(item, index) in list"
+                        :key = 'index'
+                    >
+                        <td>{{item.id}}</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.source | localed}}</td>
+                        <td>{{item.source_order_created.slice(0,10).replace(/-/g, '.')}}</td>
+                        <td>{{item.stage}}</td>
+                        <td class="merchant-table-money">{{item.total_price.toString() | cash}} ₸</td>
+                        <td class="merchant-table-unload"> <i class="fal fa-check check-icon" v-if='item.synced === 1'></i></td>
+                        <td class="merchant-table-unload"><i class="fal fa-check check-icon" v-if='item.complete !== 0'></i></td>
                         <td class="merchant-table-button-wrapper">
                             <div class="merchant-table-button-inner"
                                 v-click-outside="uploadHide"
                             >
                                 <div class="merchant-table-button"
-                                    @click='isUpload = true'
+                                    @click='isUploadHandler(item.id)'
                                 >
                                     <i class="far fa-upload"></i>
                                 </div>
                                 <transition name="table-button">
-                                    <div class="merchant-table-upload-menu" v-show='isUpload'>
+                                    <div class="merchant-table-upload-menu" v-show='item.isUpload'>
                                         Выгрузить в CRM
                                     </div>
                                 </transition>
@@ -67,40 +70,79 @@
                                     </div>
                                 </transition>
                             </div>
-
-
-                            
                         </td>
                     </tr>
-                    
-                    
                 </tbody>
             </table>
         </div>
+
+        <infinite-loading spinner='spiral' @infinite="infiniteHandler"> </infinite-loading>
     </div>
 </template>
 
 <script>
 import ClickOutside from 'vue-click-outside'
+import locale from '@/plugins/locale.plug'
+import _ from 'lodash'
 
 export default {
     middleware: ['auth', 'merchant'],
     data: () => ({
-        isUpload: false,
-        isMenu: false
+        isMenu: false,
+        list: [],
+        offset: 0,
+        needLoad: false
     }),
+    filters: {
+        localed(source) {
+            let mess
+            locale.localization.map(item => { if(item.key === source){ mess = item.message } })
+            return mess
+        }
+    },
     layout: 'main',
     methods: {
+        async infiniteHandler($state){
+            await this.load()
+            $state.loaded()
+            if(this.needLoad){$state.complete()}
+        },
         uploadHide () {
-            this.isUpload = false
+           // hide dropdown
+        },
+        isUploadHandler(id){
+            this.list.map(item => {
+                if(item.id === id){
+                    this.uploadHide()
+                }
+            })
+            item.isUpload = true
         },
         menuHide() {
             this.isMenu = false
+        },
+        async load() {
+            this.offset +=15
+            const data = await this.$store.dispatch('orders/GET_ORDERS', this.offset)
+            console.log(data);
+            if(data.status === 'success'){
+                data.data.map (item => {
+                    item.isUpload = false
+                    item.isMenu = false
+                })
+                this.list = [...this.list, ...data.data]
+                console.log(this.list);
+            }
+            else {
+                this.needLoad = true
+                return
+            }
         }
     },
     directives: {
         ClickOutside
     }
+
 }
 </script>
 
@@ -133,7 +175,7 @@ export default {
 }
 .merchant {
     width: 100%;
-    
+
     &-add-btn {
         padding: 0 10px;
         width: 141px;
@@ -168,6 +210,9 @@ export default {
             transform: rotate(90deg);
         }
     }
+    &-table-money{
+        min-width: 150px;
+    }
      &-table-addition-menu{
         border-radius: 4px;
         position: absolute;
@@ -183,7 +228,7 @@ export default {
         color: #333333;
         ul {
             width: inherit;
-            
+
         }
 
         &-item {
@@ -192,8 +237,8 @@ export default {
             padding: 20px;
             &:hover {
                 background: rgba(#005CCC, .1);
-                
-                
+
+
             }
         }
         &::after {
@@ -207,7 +252,7 @@ export default {
             transform: rotate(-90deg);
         }
     }
-    
+
     &-table-button {
         width: 32px;
         height: 32px;
@@ -235,7 +280,7 @@ export default {
     }
     &-table-unload {
         text-align: center;
-        
+
         &-head {
             width: 80px;
         }
@@ -253,7 +298,7 @@ export default {
             font-size: 16px;
             color: rgba(#00479C, .3);
         }
-        
+
         &-input {
             border: none;
             outline: none;
@@ -288,7 +333,7 @@ table tr {
     height: 64px;
     background-color: #fff;
     border-bottom: 1px solid #e8e9eb;
-    
+
 }
 table tbody tr {
     cursor: pointer;

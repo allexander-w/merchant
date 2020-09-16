@@ -8,12 +8,10 @@
             <div class="sources-card" 
                 v-for = '(source, index) in sources'
                 :key= 'index'
-                
             >   
                 <img :src="require(`~/assets/img/${source.code}.svg`)" alt="" class="sources-card-logo">
-
                 <p class="sources-card-desc">{{source.description}}</p>
-                <button @click = 'plug(source)' class="standart-btn sources-card-btn" :class="{'yellow-standart-button': !source.enabled,  'blue-standart-button': source.enabled}">{{!source.enabled ? 'Подключить' : 'Настроить'}}</button>
+                <button @click='plug(source)' class="standart-btn sources-card-btn" :class="{'yellow-standart-button': !source.enabled,  'blue-standart-button': source.enabled}">{{!source.enabled ? 'Подключить' : 'Настроить'}}</button>
                 <div class="sources-card-indicator" v-if='source.enabled'>
                     <p>Подключен</p>
                 </div>
@@ -33,7 +31,7 @@ export default {
     }),
     methods: {
         plug(source) {
-            source.enabled ? this.$router.push({ name: `merchant-orders-sources-id` , params: { id: source.id, propertyId: source.properties.id, sourceId: source.id, params: source.properties.params, token: source.properties.token}}) : this.$router.push({ name: `merchant-orders-sources-id` , params: { id: source.id, sourceId: source.id}})
+            source.enabled ? this.$router.push(`/merchant/orders/sources/${source.id}`) : this.$router.push({path: `/merchant/orders/sources/${source.id}`, query: {empty: true}})
         }
     },
     async mounted() { 

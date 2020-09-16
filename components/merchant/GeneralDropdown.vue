@@ -26,18 +26,11 @@ import ClickOutside from 'vue-click-outside'
 
 export default {
     props: {
-        validateArray:{
-            type: Array,
-            default: () => []
-        },
         currentElement: {
             type: String,
             default: ''
         },
-        name: {
-            type: String,
-            default: ''
-        },
+        
         items: {
             type: Array,
             default: () => [
@@ -60,67 +53,18 @@ export default {
         ClickOutside
     },
     methods: {
-        validateArr() {
-
-        },
         chooseItem(item) {
-            if (this.validateArray){
-                let flag = false
-                this.validateArray.map(arrItem => {
-                    const isProp = arrItem.hasOwnProperty(this.name)
-                    console.log(isProp)
-                    if(arrItem.id === item.id) {
-                        alert('Нельзя выбирать одинаковые позиции')
-                        flag = true
-                        this.dropdownTitle = 'Выберите элемент'
-                        this.$emit('deleteElem', this.name)
-                        this.isOpen = false
-                    }
-                    if (isProp) {
-                        this.dropdownTitle = 'Выберите элемент'
-                        this.$emit('deleteElem', this.name)
-                        this.isOpen = false
-                    }
-                })
-
-                 if(!flag){
-                    this.dropdownTitle = item.name,
-                    this.$emit('choosedItem', {item, name: this.name})
-                    this.isOpen = false
-                }
-
-            } else {
-                console.log('im work! else');
-                this.dropdownTitle = item.name
-                this.$emit('choosedItem', item.id)
-                this.isOpen = false
-            }
+            this.dropdownTitle = item.name
+            this.$emit('choosedItem', item)
+            this.isOpen = false
         },
         hide(){
             this.isOpen = false
         }
     },
-    watch: {
-        items(){
-            if(this.currentElement){
-                this.items.map(item => {
-                    if(item.id.toString() === this.currentElement) {
-                        this.dropdownTitle = item.name
-                        if(this.name) {
-                            this.$emit('beginChoose', {item, name: this.name})
-                        }
-                        
-                    }
-                })
-            } 
-            else {    
-                this.dropdownTitle = 'Выберите элемент'
-            }
-
-            
-        }
-    }
-    
+    mounted(){
+        this.dropdownTitle = this.items[0].name
+    } 
 }
 </script>
 

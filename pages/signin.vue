@@ -4,13 +4,13 @@
 
         <h3 class="signin-merchant-title">Вход в систему</h3>
         <div class="signin-input">
-            <GeneralInput :numberKey='5' :func='false' :vModel='email' @vModel='model => email = model' :placeholder='"E-mail"' />
+            <GeneralInput :valid='($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)' :numberKey='5' :func='false' :vModel='email' @vModel='model => email = model' :placeholder='"E-mail"' />
         </div>
-        <!--<p class="signin-warning">Email некорректный</p>-->
+        <p v-if='($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)' class="validate-warning">Email некорректный</p>
         <div class="signin-input">
-            <GeneralInput :numberKey='6' :inputType='"password"' :func='false' :vModel='password' @vModel='model => password = model' :placeholder='"Пароль"' />
+            <GeneralInput :valid='($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)' :numberKey='6' :inputType='"password"' :func='false' :vModel='password' @vModel='model => password = model.trim()' :placeholder='"Пароль"' />
         </div>
-       <!-- <p class="signin-warning">Пароль некорректный</p> -->
+       <p v-if="($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)" class="validate-warning">Пароль некорректный</p>
 
         <div class="signin-settings">
             <Checkbox />
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { required, minLength, email } from 'vuelidate/lib/validators'
 import GeneralInput from '@/components/merchant/GeneralInput'
 import Checkbox from '@/components/merchant/Checkbox'
 
@@ -35,8 +36,17 @@ export default {
         email: '',
         password: ''
     }),
+    validations:{
+        email: {required, email},
+        password: {required, minLength: minLength(6)}
+    },
     methods: {
         async signin() {
+            if(this.$v.$invalid){
+                this.$v.$touch()
+                return
+            }
+
             const formData = {
                 email: this.email,
                 password: this.password
@@ -50,10 +60,6 @@ export default {
 
 <style lang="scss">
 .signin {
-    &-warning {
-        font-size: 13px;
-        margin-top: -32px;
-    }
     &-btn {
         margin-top: 32px;
         width: 360px;

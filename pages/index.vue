@@ -6,7 +6,9 @@
         <div class="retail-header-main">
           <h3 class="retail-header-title">Один сервис для управления и автоматизации интернет торговли.</h3>
           <p class="retail-header-desc big-paragraph">Наведите порядок в продажах! Мгновенно обрабатывайте заказы с торговых площадок, автоматизируйте учёт товаров и синхронизацию с маркетплейсами, повышайте лояльность с CRM. </p>
-          <button class="retail-header-btn standart-btn" @click="$router.push('/signup')">Протестировать бесплатно</button>
+          <nuxt-link to='/signup'>
+            <button class="retail-header-btn standart-btn">Протестировать бесплатно</button>
+          </nuxt-link>
         </div>
       </div>
     </section>
@@ -19,11 +21,7 @@
 
     <section class="retail-orders">
       <div class="container">
-        <OrdersHeader @chooseHandler = 'selectHandler' />
-
-        <div class="order-slider">
-          <OrderView :currentSlide='slider' />
-        </div>
+        <OrderSlider />
       </div>
     </section>
 
@@ -35,7 +33,7 @@
         <p class="fast-start-desc small-paragrapgh">
           На каждом этапе вы получите подробную инструкцию и помощь наших специалистов. Весь процесс займет не больше пару дней. 
         </p>
-
+        
         <FastStartSteps />
       </div>
     </section>
@@ -48,13 +46,24 @@
               Интегрируйте сервисы, которые вы уже используете.
             </h3>
             <p class="retail-services-description small-paragraph">Подключите необходимые бизнес-инструменты к itl.merchant и сделайте его вашим центром управления интернет-продажами.</p>
-           
-            <ServiceLinks />
+            <div class="service-links-wrapper">
+              <div class="service-link"
+                  v-for = '(link, index) in links'
+                  :key = 'index'
+              >
+                  <p class="retail-services-link"
+                      @click = 'openDesc(link)'
+                      :class='{"active-link-service": link.active}'
+                  >{{link.title}}</p>
+                  <transition name='open-desc'>
+                      <div class="retail-services-desc" v-if='link.active'>
+                          <p class="small-paragraph">Освойте новые рынки сбыта — это дело пары кликов.</p>
+                      </div>
+                  </transition>
+              </div>
           </div>
-          <div class="retail-services-info-blocks">
-            <ServicesBlocks />
           </div>
-          
+            <ServicesBlocks :services = 'links[curLink].services' class="retail-services-info-blocks" />
         </div>
       </div>
     </section> 
@@ -62,7 +71,6 @@
     <section class="retail-plans">
       <div class="container">
         <h3 class="retail-plans-title main-title">Тарифные планы</h3> 
-
         <RetailPlans />
       </div>
     </section>
@@ -109,32 +117,84 @@
 <script>
 import Header from '@/components/Header'
 import RetailItems from '@/components/RetailItems'
-import OrdersHeader from '@/components/OrdersHeader'
-import OrderView from '@/components/OrderView'
 import FastStartSteps from '@/components/FastStartSteps'
 import RetailPlans from '@/components/RetailPlans'
 import PaybackCards from '@/components/PaybackCards'
 import Reviews from '@/components/Reviews'
 import ServicesBlocks from '@/components/ServicesBlocks'
-import ServiceLinks from '@/components/ServiceLinks'
+import OrderSlider from '@/components/OrderSlider'
 
 export default {
-  components: {ServiceLinks,ServicesBlocks,Header,RetailItems,OrderView,OrdersHeader,FastStartSteps, RetailPlans, PaybackCards, Reviews},
+  components: {OrderSlider,ServicesBlocks,Header,RetailItems,FastStartSteps, RetailPlans, PaybackCards, Reviews},
   data: () => ({
-    slider: 1
+    curLink: 0,
+    links: [
+      {
+        id: 0,
+        title: 'Торговые площади',
+        desc: 'Освойте новые рынки сбыта — это дело пары кликов.', 
+        active: true,
+        services: [
+            {logo: 'kaspi', color: '239, 70, 53', isSoon: false},
+            {logo: 'satuserv', color: '114, 42, 139', isSoon: false},
+            {logo: 'wildberries', color: '173, 17, 156', isSoon: true},
+            {logo: 'fortemarket', color: '173, 17, 156', isSoon: true}
+        ]
+      },
+      {
+        id: 1,
+        title: 'Cлужбы доставки', 
+        desc: 'Освойте новые рынки сбыта — это дело пары кликов.', 
+        active: false,           
+        services: [
+            {logo: 'bitrix24', color: '11, 187, 239', isSoon: false},
+            {logo: 'amocrm', color: '50, 157, 199', isSoon: false},
+            {logo: '1c', color: '217, 25, 32', isSoon: false},
+            {logo: 'retail', color: '238, 52, 51', isSoon: true},
+            {logo: '1cbitrix', color: '238, 52, 51', isSoon: true},
+            {logo: 'alpha', color: '201, 36, 51', isSoon: true},
+        ]
+      },
+      {
+        id: 2,
+        title: 'Приложения и сервисы', 
+        desc: 'Освойте новые рынки сбыта — это дело пары кликов.', 
+        active: false,
+        services: [
+            {logo: 'dpd', color: '239, 70, 53', isSoon: true},
+            {logo: 'cdek', color: '65, 104, 158', isSoon: true},
+        ]
+      }
+    ]
   }),
   methods: {
-    selectHandler(id) {
-      this.slider = id
+    openDesc(link) {
+      this.links.map(item => {
+          item.active = false
+      })
+      link.active = true
+      this.curLink = link.id
     }
   }
-
 }
 </script>
 
 <style lang="scss" scoped>
-.order-slider {
-  width: 100%;
-  overflow: hidden;
+.dashline{
+  position: absolute;
+  bottom: 190px;
+}
+.open-desc-enter-active {
+  transition: all .3s ease;
+}
+.open-desc-leave-active {
+  transition: all .3s ease;
+}
+.open-desc-enter, .open-desc-leave-to {
+  height: 0;
+  opacity: 0;
+}
+.active-link-service {
+    color: #333333;
 }
 </style>

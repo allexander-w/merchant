@@ -15,7 +15,7 @@
 
             <div class="header-login">
                 <i class="fad fa-sign-in-alt sign-in-icon"></i>
-                <span class="header-login-text" @click='$router.push("/signin")'>Войти</span>
+                <nuxt-link to='/signin' class="header-login-text">Войти</nuxt-link>
             </div>
         </div>
 </template>

@@ -3,7 +3,7 @@
         <div class="merchant-title plug-source-title">
             Подключение источника:
         </div>
-
+        <!-- NOT EMPTY:  -->
         <div class="plug-source-body">
             <img src="~/assets/img/kaspi.svg" alt="">
 
@@ -11,19 +11,48 @@
             <GeneralInput :numberKey='2' :dis='true' :needInfo='true' :vModel='webhook' @vModel='model => webhook = model' :placeholder='"Веб-хук"' />
 
         </div>
-        <div class="plug-source-body">
+
+        <!-- NOT EMPTY BODY: -->
+        <div class="plug-source-body" v-if='isLoad'>
             <div class="merchant-title plug-source-title">Соответствие стадий:</div> 
-            <GeneralDropdown :currentElement='$route.params.params.category.toString()' @choosedItem='funnelHandler' :items='statuses' :placeholder = '"Воронка"' />
+            <WarningMessage :description='"Заказы переведенные в стадию, не указанную в списке, не отслеживаются!"' />
+            <DropdownSources :dataObject='market' 
+                            :items='statuses' 
+                            :placeholder = '"Воронка"' 
+                            @choosedItem='changeFunnel'
+                            
+            />
 
             <div class="plug-source-subtitle">Стадии:</div> 
-            <GeneralDropdown @deleteElem='deleteItem' :validateArray='choosedElements' @beginChoose='currentChoosedItems' :name ='"NEW"' :currentElement='$route.params.params.statuses.NEW' @choosedItem='chooseHandler' :items='currentStatus.statuses' :placeholder = '"Новый"' />
-            <GeneralDropdown @deleteElem='deleteItem' :validateArray='choosedElements' @beginChoose='currentChoosedItems' :name ='"SIGN_REQUIRED"' :currentElement='$route.params.params.statuses.SIGN_REQUIRED' @choosedItem='chooseHandler' :items='currentStatus.statuses' :placeholder = '"На подписании"' />
-            <GeneralDropdown @deleteElem='deleteItem' :validateArray='choosedElements' @beginChoose='currentChoosedItems' :name ='"PICKUP"' :currentElement='$route.params.params.statuses.PICKUP' @choosedItem='chooseHandler' :items='currentStatus.statuses' :placeholder = '"Самовывоз"' />
-            <GeneralDropdown @deleteElem='deleteItem' :validateArray='choosedElements' @beginChoose='currentChoosedItems' :name ='"DELIVERY"' :currentElement='$route.params.params.statuses.DELIVERY' @choosedItem='chooseHandler' :items='currentStatus.statuses' :placeholder = '"Доставка"' />
-            <GeneralDropdown @deleteElem='deleteItem' :validateArray='choosedElements' @beginChoose='currentChoosedItems' :name ='"KASPI_DELIVERY"' :currentElement='$route.params.params.statuses.KASPI_DELIVERY' @choosedItem='chooseHandler' :items='currentStatus.statuses' :placeholder = '"Kaspi доставка"' />
-            <GeneralDropdown @deleteElem='deleteItem' :validateArray='choosedElements' @beginChoose='currentChoosedItems' :name ='"ARCHIVE"' :currentElement='$route.params.params.statuses.ARCHIVE' @choosedItem='chooseHandler' :items='currentStatus.statuses' :placeholder = '"Архив"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' @beginChoose='beginEls' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"NEW"' :items='stadies' :placeholder = '"Новый"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' @beginChoose='beginEls' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"SIGN_REQUIRED"' :items='stadies' :placeholder = '"На подписании"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' @beginChoose='beginEls' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"PICKUP"' :items='stadies' :placeholder = '"Самовывоз"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' @beginChoose='beginEls' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"DELIVERY"' :items='stadies' :placeholder = '"Доставка"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' @beginChoose='beginEls' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"KASPI_DELIVERY"' :items='stadies' :placeholder = '"Kaspi доставка"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' @beginChoose='beginEls' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"ARCHIVE"' :items='stadies' :placeholder = '"Архив"' />
 
-            <button @click='sendHandler' class="standart-btn yellow-standart-button">Подключить</button>
+            <button class="standart-btn yellow-standart-button" @click="sendHandler">Подключить</button>
+        </div>
+
+        <div class="plug-source-body" v-if='isEmpty'>
+            <div class="merchant-title plug-source-title">Соответствие стадий:</div> 
+            <WarningMessage :description='"Заказы переведенные в стадию, не указанную в списке, не отслеживаются!"' />
+            <DropdownSources :dataObject='market' 
+                            :items='statuses' 
+                            :placeholder = '"Воронка"' 
+                            @choosedItem='changeFunnel'
+                            
+            />
+
+            <div class="plug-source-subtitle">Стадии:</div> 
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"NEW"' :items='stadies' :placeholder = '"Новый"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"SIGN_REQUIRED"' :items='stadies' :placeholder = '"На подписании"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"DELIVERY"' :items='stadies' :placeholder = '"Доставка"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"PICKUP"' :items='stadies' :placeholder = '"Самовывоз"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"KASPI_DELIVERY"' :items='stadies' :placeholder = '"Kaspi доставка"' />
+            <DropdownSources @deleteElem='deleteItem' :choosedElements='choosedElements' :changing='true' @choosedItem='changeStadies' :dataObject='market' :name='"ARCHIVE"' :items='stadies' :placeholder = '"Архив"' />
+
+            <button class="standart-btn yellow-standart-button" @click="sendHandler">Подключить</button>
         </div>
     </div>
 </template>
@@ -31,124 +60,120 @@
 <script>
 import _ from '@/plugs/request.plug'
 import GeneralInput from '@/components/merchant/GeneralInput'
-import GeneralDropdown from '@/components/merchant/GeneralDropdown'
+import DropdownSources from '@/components/merchant/DropdownSources'
+import WarningMessage from '@/components/merchant/WarningMessage'
 
 export default {
-    validate ({params}) {
-       return params.id === params.sourceId
-    },
     middleware: ['auth', 'merchant'],
     layout: 'main',
-    components: {GeneralInput, GeneralDropdown},
-    data: () => ({
+     data: () => ({
         token: '',
         webhook: '',
         funnel: '',
-        newSource: '',
-        onSigning: '',
-        delivery: '',
         statuses: [],
-        currentStatus: {},
+        stadies: [],
         market: {},
-        choosedElements: []
+        isLoad: false,
+        choosedElements: [],
+        isEmpty: false 
     }),
-    watch: {
-        funnel(){
-            this.$route.params.params.statuses = {
-                ARCHIVE: '',
-                DELIVERY: '',
-                KASPI_DELIVERY: '',
-                NEW: '',
-                PICKUP: '',
-                SIGN_REQUIRED: ''
-            }
-            this.changeStatus()
-            this.choosedElements = [{'_': '_doc'}]
-            console.log('CHOOSED EL',this.choosedElements);
-            console.log(this.currentStatus);
-        }
-    },
+    components: {GeneralInput, DropdownSources, WarningMessage},
     methods: {
         deleteItem(name){
             this.choosedElements = this.choosedElements.filter(item => !item.hasOwnProperty(name))
             console.log('deleted array: ',this.choosedElements)
         },
-        currentChoosedItems({item, name}){
+        beginEls({item, name}){
             this.choosedElements = [...this.choosedElements, {[name]: item.id, id: item.id}]
             this.choosedElements = this.choosedElements.filter((elem, pos) => {
                 return this.choosedElements.indexOf(elem) == pos
             })
-            console.log(this.choosedElements)
         },
-        funnelHandler(id) {
-            this.funnel = id.item.id
-            console.log(this.funnel)
+        // Funnel dropdown: 
+        changeFunnel(item){
+            // Set method "name" of object
+            item.statuses.map(status => {
+                status.name = status.NAME
+            })
+            // If store id change, all stadies is empty
+            this.$store.dispatch('sources/SEND_ID')
+            this.stadies = item.statuses
+            this.funnel = item.id
+
+            this.choosedElements = [{'_': 'empty'}]
         },
-        chooseHandler({item, name}) {
+        changeStadies({item, name}){
             this.choosedElements = this.choosedElements.filter(item => Object.keys(item)[0] !== '_')
             this.choosedElements = [...this.choosedElements, {[name]: item.id, 'id': item.id}]
-            console.log(this.choosedElements)
+
+            console.log(this.choosedElements);
         },
         async sendHandler() {
             if (this.choosedElements.length < 6) {
                 alert ('Заполните все поля')
                 return
             }
+            // Array in object: 
             const statuses = {}
+            
             this.choosedElements.map(item => {
                 statuses[Object.keys(item)[0]] = item.id
                 delete item['id']
             })
+
             let body = {
-                "merchant_id": JSON.parse(localStorage.getItem('merchant')).merchantId.toString(),
-                "market_id": this.$route.params.sourceId.toString(),
-                "property_id": this.$route.params.propertyId.toString(),
-                "token": this.$route.params.token,
-                "category": this.funnel.toString() || this.$route.params.params.category.toString(),
+                "merchant_id": this.market.merchant_id.toString(),
+                "market_id": this.market.market_id.toString(),
+                "property_id": this.market.id.toString(),
+                "token": this.market.token,
+                "category": this.funnel.toString(),
                 "statuses": statuses
             }
-            const data = await this.$store.dispatch('markets/SAVE_MARKET', body)
-            if (data.status === 'success'){
-                this.$router.push('/merchant/orders/sources')
-            } else {
-                alert ('Заполните все поля')
-                return
-            }
-            
+            console.log(this.market)
+            console.log(body);
+
+            // const data = await this.$store.dispatch('markets/SAVE_MARKET', body)
+            // data.status === 'success' ? this.$router.push('/merchant/orders/sources') : alert ('Заполните все поля')
         },
-        setStatus() {
-            this.statuses.map(status => {
-                if (status.ID === this.$route.params.params.category) {
-                    this.currentStatus = status
-                }
-            })
-            this.currentStatus.statuses.map(item => {
-                item.name = item.title
-            })
-        },
-        changeStatus(){
-            this.statuses.map(status => {
-                if (status.ID === this.funnel) {
-                    this.currentStatus = status
-                }
-            })
-            this.currentStatus.statuses.map(item => {
-                item.name = item.title
-            })
-        }
     },
     async mounted() {
-        await (await this.$store.dispatch('markets/GET_MARKETS')).data.map(item => {
-            if(item.id === this.$route.params.id) {this.market = item.properties}
-        })
-        this.token = this.market.token
-        this.webhook = `${_.mainUrl}app/hook?id={{ID}}`
-        this.statuses = await (await this.$store.dispatch('merchants/MERCHANT_STATUSES')).data
-        this.setStatus()
+            // Get all markets:
+            const marketData = await this.$store.dispatch('markets/GET_MARKETS')
 
-        console.log('Market: ', this.market);
-        console.log(this.statuses)
-        console.log(this.$route.params)
+            // Choose need market:
+            marketData.data.map(item => {
+                if(item.id.toString() === this.$route.params.id) {
+                    console.log(item);
+                    if(item.properties) {
+                        
+                        this.market = item.properties
+                    }
+                }
+            })
+            // Set token and webhook
+            this.webhook = `${_.mainUrl}app/hook?id={{ID}}`
+
+            Object.keys(this.market).length ? console.log('true') : console.log('false')
+
+            // Get all statuses: 
+            this.statuses = await (await this.$store.dispatch('merchants/MERCHANT_STATUSES')).data
+            console.log(this.statuses)
+            // Set funnel dropdown
+            if(Object.keys(this.market).length){
+                this.statuses.map(item => {
+                    if(item.id.toString() === this.market.params.category.toString()){
+                        this.changeFunnel(item)
+                    }
+                })
+            }
+            
+            if(this.$route.query.empty){
+                this.isEmpty = true
+                
+            } else {
+                this.token = this.market.token
+                this.isLoad = true
+            }
     }
 }
 </script>
