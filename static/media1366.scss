@@ -136,26 +136,7 @@
        
     }
     }
-    .big-paragraph {
-        font-weight: normal;
-        font-size: 20px;
-        line-height: 32px;
-    }
-    .small-paragraph {
-        font-weight: normal;
-        font-size: 16px;
-        color: #333333;
-        line-height: 24px;
-    }
-    .retail-footer-underfooter {
-        width: calc(48px * 24);
-    }
-    .main-title {
-        font-weight: normal;
-        font-size: 32px;
-        line-height: 50px;
-        color: #333333;
-    }
+    
     .image-body {
         width: calc(48px * 12);
         height: 323px;
@@ -200,5 +181,22 @@
     }
     .retail-footer-title {
         color: #fff;
+    }
+    .big-paragraph {
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 32px;
+    }
+    .small-paragraph {
+        font-weight: normal;
+        font-size: 16px;
+        color: #333333;
+        line-height: 24px;
+    }
+    .main-title {
+        font-weight: normal;
+        font-size: 32px;
+        line-height: 50px;
+        color: #333333;
     }
 }

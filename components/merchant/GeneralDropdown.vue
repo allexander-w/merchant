@@ -30,6 +30,10 @@ export default {
             type: String,
             default: ''
         },
+        dropdownItem: {
+            type: String,
+            default: ''
+        },
         
         items: {
             type: Array,
@@ -63,7 +67,11 @@ export default {
         }
     },
     mounted(){
-        this.dropdownTitle = this.items[0].name
+        this.items.map(item => {
+            if(item.type === this.dropdownItem) {
+                this.dropdownTitle = item.name
+            } else {this.dropdownTitle =  this.items[0].name }
+        })
     } 
 }
 </script>

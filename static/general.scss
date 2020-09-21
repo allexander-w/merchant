@@ -81,8 +81,8 @@ a, a:visited, a:hover, a:active {
   }
   .retail {
     &-footer{
-      padding: 88px 0;
-      height: 520px;
+      padding: 88px 0 0 0;
+      min-height: 520px;
       background: linear-gradient(128.22deg, #0E65DD 0%, #9836F4 80.73%);
       position: relative;
       &-title {
@@ -105,12 +105,12 @@ a, a:visited, a:hover, a:active {
       }
   
       &-underfooter {
-        width: calc(64px * 24);
+        margin-top: 96px;
+        border-top: 1px solid rgba(#fff, .1);
+        height: 128px;
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        position: absolute;
-        bottom: 48px;
-
         color: #fff;
         font-size: 16px;
       }
@@ -195,12 +195,13 @@ a, a:visited, a:hover, a:active {
   }
   .right-underfooter {
       display: flex;
-      p {
-          margin-right: 16px;
-
-          &:last-child{
-            margin-right: 0;
-          }
+      a {
+        margin-right: 16px;
+        color: #fff;
+        
+        &:last-child{
+        margin-right: 0;
+        }
       }
   }
   .retail-services {
@@ -324,11 +325,7 @@ a, a:visited, a:hover, a:active {
         }
     }
 }
-.cart-icon {
-    color: #0E6CDD;
-    font-size: 24px;
-    margin-right: 24px;
-}
+
 .image-body {
     width: 832px;
     height: 472px;
@@ -589,7 +586,7 @@ a, a:visited, a:hover, a:active {
     align-items: center;
     justify-content: center;
     &:nth-child(3n) {
-        margin: 0 30px 0 0;
+        margin: 0 -30px 0 0;
     }
     &-add {
         width: 256px;
@@ -762,6 +759,83 @@ a, a:visited, a:hover, a:active {
     padding: 0 24px;
   }
 
+  .message-enter-active, .message-leave-active {
+    transition: .5s ease-out;
+  }
+  .message-enter, .message-leave-to {
+    transform: translateY(-48px);
+    opacity: 0;
+  }
 
+  .loader {
+    background-color: #fff;
+    opacity: 1;
+    animation: load 1s infinite ease-out;
+}
+@keyframes load{
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: .8;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
 
-@import './media1366.scss'
+@media screen and (max-width: 1540px){
+    .retail-plans-cards {
+        padding: 0 0;
+    }
+    .retail-plans-card {
+        box-sizing: border-box;
+        width: 400px;
+        height: 480px;
+        background-color: #FFFFFF;
+        border-radius: 6px;
+        position: relative;
+        padding: 48px;
+    
+        &-title {
+            font-size: 30px;
+            color: #333333;
+            margin-bottom: 16px;
+        }
+    
+        &-desc {
+            max-width: calc(64px*5);
+            color: #101E3F;
+            margin-bottom: 24px;
+        }
+        &-button {
+            width: calc(400px - 48*2px);
+            height: 56px;
+            background-color: #0E6CDD;
+            color: #fff;
+            position: absolute;
+            bottom: 40px;
+            z-index: 1;
+    
+            &:hover {
+                background-color: #2A7EF2;
+            }
+        }
+        &-select {
+            position: absolute;
+            bottom: 112px;
+        }
+        &-price {
+            font-size: 40px;
+            color: #101E3F;
+        }
+        &-warn {
+            font-size: 13px;
+            color: #101E3F;
+        }
+        
+    }
+}
+
+@import './media1366.scss';
+@import './media862.scss';

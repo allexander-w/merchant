@@ -7,14 +7,22 @@
         </ul>
 
         <ul class="down-navigation">
-            <li class="header-navigation-item"
+            <!-- <li class="header-navigation-item"
                 v-for =' (navItem, index) in downNavigation'
                 :key = 'index'
                 :class="{'active-header-nav-item': navItem.active}"
                 @click="selectHandler(navItem)"
             >
                 <i class='header-nav-icon' :class="navItem.icon"></i>
-            </li>
+            </li> -->
+            <nuxt-link class="header-navigation-item"
+                v-for =' (navItem, index) in downNavigation'
+                :key = 'index'
+                active-class="active-header-nav-item"
+                :to='navItem.path'
+            >
+                <i class='header-nav-icon' :class="navItem.icon"></i>
+            </nuxt-link>
         </ul>
     </div>
 </template>
@@ -27,7 +35,7 @@ export default {
             {id: 3, icon: 'far fa-dolly', desc: 'Описание', active: false},
         ],
         downNavigation: [
-            {id: 4, icon: 'fal fa-user-circle', desc: 'Описание', active: false},
+            {id: 4, icon: 'fal fa-user-circle', desc: 'Описание', path: '/merchant/user-settings', active: false},
         ]
 
     }),

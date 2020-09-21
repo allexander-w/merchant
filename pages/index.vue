@@ -105,8 +105,8 @@
         <div class="retail-footer-underfooter">
           <p>© 2020 itl.merchant. ТОО ITL KZ</p>
           <div class="right-underfooter">
-            <p>Политика обработки персональных данных</p>
-            <p>Оферта и Лицензионный договор</p>
+            <nuxt-link to='#'>Политика обработки персональных данных</nuxt-link>
+            <nuxt-link to='#'>Оферта и Лицензионный договор</nuxt-link>
           </div>
         </div>
       </div>

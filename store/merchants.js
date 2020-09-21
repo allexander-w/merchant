@@ -24,4 +24,22 @@ export const actions = {
         const data = await req.request(url, 'GET', req.headers(req.token()), null)
         return data
     },
+    // Edit current merchant merchant-settings
+    async MERCHANT_EDIT({}, merchData){
+        const url = new URL (`${req.mainUrl}api/merchant/edit`)
+        const data = await req.request(url, 'POST', req.headers(req.token()), merchData)
+        return data
+    },
+    // Merchant edit requesits merchant-user
+    async MERCHANT_REQUISITES_EDIT({}, merchData){
+        const url = new URL (`${req.mainUrl}api/merchant/requisites/add`)
+        const data = await req.request(url, 'POST', req.headers(req.token()), merchData)
+        return data
+    },
+    // Get requesits merchant-user
+    async GET_REQUISITES({}){
+        const url = new URL (`${req.mainUrl}api/merchant/requisites?merchant_id=${req.merchant.id()}`)
+        const data = await req.request(url, 'GET', req.headers(req.token()), null)
+        return data
+    },
 }

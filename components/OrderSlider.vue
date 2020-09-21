@@ -8,7 +8,7 @@
                 @click="chooseHandler(item)"
                 
             >
-                <i class="fad fa-shopping-cart cart-icon"></i> <span class="order-header-item-name">{{item.name}}</span>
+                <i class="cart-icon" :style ='item.active ? { "--icon-color" : `rgba(14, 108, 221, 1)`} : {"--icon-color": "rgba(14, 108, 221, .5)"}' :class='item.icon' ></i> <span class="order-header-item-name">{{item.name}}</span>
             </div>
         </div>
         <div class="order-slider">
@@ -19,6 +19,7 @@
                 :key='`key${index}`'
             >   
                     <div class="order-view-wrapper">
+                        <p class="slider-soon" v-if='item.isSoon'>Скоро!</p>
                         <h3 class="order-view-title main-title">
                             {{item.title}}
                         </h3>
@@ -32,13 +33,17 @@
                             {{item.descthree}}
                         </p>
                     </div>
-                        <!-- <div class="image_body"> -->
-                            <img class="image-body" :src="require(`~/assets/img/${item.img}.png`)" alt="">
-                        <!-- </div> -->
+                        <img class="image-body" :src="require(`~/assets/img/${item.img}.png`)" alt="">
                 </div>
             </transition-group>
             </div>
         </div>
+ 
+    
+
+
+
+
     </div>
 </template>
 
@@ -48,7 +53,7 @@ export default {
         slides: [
             {
                 id: 1, 
-                icon: 'icon', 
+                icon: 'fad fa-shopping-cart', 
                 name: 'Обрабатывайте заказы', 
                 active: true,
                 data:{
@@ -63,7 +68,7 @@ export default {
             },
             {
                 id: 2, 
-                icon: 'icon', 
+                icon: 'fal fa-boxes-alt', 
                 name: 'Синхронизируйте товары', 
                 active: false,
                 data:{
@@ -78,29 +83,30 @@ export default {
             },
             {
                 id: 3, 
-                icon: 'icon', 
+                icon: 'far fa-dolly', 
                 name: 'Ведите складской учет', 
                 active: false,
                 data:{
                     id: 3,
-                    isSoon: false, 
-                    title: '3Больше заказов, меньше менеджеров. Обрабатывайте заказы с десятков источников в вашей CRM.',
-                    descone: 'Заказы со всех офлайн или онлайн источников попадают в единый список и распределяются между операторами. У каждого клиента единая история коммуникаций, вне зависимости от канала: будь то сайт или магазин для розницы.',
-                    desctwo: 'Операторы работают в режиме одного окна — для просмотра товарных остатков магазина, выставления оплаты, оформления доставки и других действий не нужно покидать сервис. Управление торговлей станет эффективнее. ',
+                    isSoon: true, 
+                    title: 'Автоматизируете процесс логистики ваших заказов.',
+                    descone: ' Автоматизируйте отправку и контроль заказов через службы доставки и транспортные компании с помощью itl.merchant. ',
+                    desctwo: 'Система поможет с созданием заявки в транспортную компанию, сама синхронизирует статусы доставки и уведомит об этом клиента и менеджера.',
+                    descthree: 'И все это в режиме одного окна в вашей CRM! Управление логистикой станет еще эффективнее и проще.',
                     img: 'order' 
                 }
             },
             {
                 id: 4, 
-                icon: 'icon', 
+                icon: 'fal fa-file-invoice-dollar', 
                 name: 'Контролируйте продажи', 
                 active: false,
                 data:{
                     id: 4,
                     isSoon: true, 
-                    title: '4Больше заказов, меньше менеджеров. Обрабатывайте заказы с десятков источников в вашей CRM.',
-                    descone: 'Заказы со всех офлайн или онлайн источников попадают в единый список и распределяются между операторами. У каждого клиента единая история коммуникаций, вне зависимости от канала: будь то сайт или магазин для розницы.',
-                    desctwo: 'Операторы работают в режиме одного окна — для просмотра товарных остатков магазина, выставления оплаты, оформления доставки и других действий не нужно покидать сервис. Управление торговлей станет эффективнее. ',
+                    title: 'Узнавайте об оплате счетов быстрее бухгалтера.',
+                    descone: 'Теперь у вас  есть возможность отслеживать состояние выставленных счетов , не выходя из CRM.',
+                    desctwo: 'Больше не придется в ручном режиме информировать менеджеров о платежах или дебиторской задолженности клиентов. Сотрудники смогут видеть статус оплаты  по своим сделкам в онлайн-режиме.',
                     img: 'delivery' 
                 }
             },
@@ -153,6 +159,22 @@ export default {
 }
 .list-leave-to {
   transform: translateX(-100%);
+}
+.slider-soon {
+    width: 74px;
+    height: 32px;
+    background: #FFD740;
+    border-radius: 5px;
+    text-align: center;
+
+    font-size: 14px;
+    color: #333333;
+    margin-bottom: 24px;
+}
+.cart-icon {
+    color: var(--icon-color);
+    font-size: 24px;
+    margin-right: 24px;
 }
 
 </style>

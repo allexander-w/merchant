@@ -2,11 +2,13 @@
     <div class="merchant-index">
         <div class="merchant-title merchant-index-title">Ваши мерчанты: </div>
 
+       
         <div class="merchant-index-wrapper">
-            <div class="merchant-index-card"
+             <div v-if='load' class="merchant-index-card loader"></div>
+             <div v-if='load' class="merchant-index-add loader"></div>
+            <div class="merchant-index-card "
                 v-for='(merchant, index) in merchants'
                 :key = 'index'
-
             >
                 <img src="~/assets/img/B24.svg" alt="" class="merchant-index-card-logo">
                 <div class="merchant-index-card-title"
@@ -22,7 +24,7 @@
                 </p>
             </div>
 
-            <div class="merchant-index-add">
+            <div v-if='!load' class="merchant-index-add">
                 <p class="merchant-index-add-text">Создайте мерчант и превратите свою CRM в центр интернет-продаж!</p>
                 <nuxt-link to='/merchant/add'>
                     <button class="standart-btn yellow-standart-button merchant-index-add-btn">Создать</button>
@@ -39,7 +41,8 @@ export default {
     layout: 'empty',
     middleware: 'auth',
     data: () => ({
-        merchants: []
+        merchants: [],
+        load: false
     }),
     methods: {
         inMerchant({name, id}) {
@@ -49,6 +52,7 @@ export default {
     },
     async mounted() {
         this.merchants = []
+        this.load = true
         const data = await this.$store.dispatch('merchants/GET_MERCHANTS')
 
         data.status === 'success'
@@ -57,7 +61,7 @@ export default {
                 localStorage.clear(),
                 this.$router.push('/signin')
               )
-
+        this.load = false
     }
 }
 </script>
@@ -126,4 +130,5 @@ export default {
         }
     }
 }
+
 </style>

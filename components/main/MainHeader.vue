@@ -31,11 +31,11 @@ export default {
     data: () => ({
         upNavigation: [
             {id: 1, icon: 'far fa-shopping-cart', desc: 'Описание', path: '/merchant/orders'},
-            {id: 2, icon: 'fal fa-boxes-alt', desc: 'Описание', path: '#'},
-            {id: 3, icon: 'far fa-dolly', desc: 'Описание', path: '##'},
+            {id: 2, icon: 'fal fa-boxes-alt', desc: 'Описание', path: '/merchant/products'},
+            // {id: 3, icon: 'far fa-dolly', desc: 'Описание', path: '##'},
         ],
         downNavigation: [
-            {id: 4, icon: 'far fa-handshake', desc: 'Описание', path: '/merchant/partners'},
+            // {id: 4, icon: 'far fa-handshake', desc: 'Описание', path: '/merchant/partners'},
             {id: 5, icon: 'fal fa-user-circle', desc: 'Описание', path: '/merchant/user'},
         ]
 

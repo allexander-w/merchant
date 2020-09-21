@@ -4,7 +4,8 @@
             Подключение источника:
         </div>
         <!-- NOT EMPTY:  -->
-        <div class="plug-source-body">
+        <div v-if='load' class="plug-source-body loader for-body"></div>
+        <div v-if='!load' class="plug-source-body">
             <img src="~/assets/img/kaspi.svg" alt="">
 
             <GeneralInput :numberKey='1' :needInfo='false' :vModel='token' @vModel='model => token = model' :placeholder='"Токен"' />
@@ -13,6 +14,7 @@
         </div>
 
         <!-- NOT EMPTY BODY: -->
+        <div v-if='load' class="plug-source-body loader for-body"></div>
         <div class="plug-source-body" v-if='isLoad'>
             <div class="merchant-title plug-source-title">Соответствие стадий:</div> 
             <WarningMessage :description='"Заказы переведенные в стадию, не указанную в списке, не отслеживаются!"' />
@@ -75,7 +77,8 @@ export default {
         market: {},
         isLoad: false,
         choosedElements: [],
-        isEmpty: false 
+        isEmpty: false,
+        load: false
     }),
     components: {GeneralInput, DropdownSources, WarningMessage},
     methods: {
@@ -138,6 +141,7 @@ export default {
     },
     async mounted() {
             // Get all markets:
+            this.load = true
             const marketData = await this.$store.dispatch('markets/GET_MARKETS')
 
             // Choose need market:
@@ -169,10 +173,12 @@ export default {
             
             if(this.$route.query.empty){
                 this.isEmpty = true
+                this.load = false
                 
             } else {
                 this.token = this.market.token
                 this.isLoad = true
+                this.load = false
             }
     }
 }
@@ -198,5 +204,8 @@ export default {
         padding: 32px;
         margin-bottom: 8px;
     }
+}
+.for-body {
+    min-height: 400px;
 }
 </style>

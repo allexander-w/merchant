@@ -5,7 +5,7 @@
                 <i class="fas fa-search merchant-search-icon"></i>
                 <input type="text" placeholder="Поиск заказа" class="merchant-search-input">
             </div>
-            <button class="standart-btn merchant-add-btn"><i class="fal fa-plus"></i> Добавить </button>
+            <!-- <button class="standart-btn merchant-add-btn"><i class="fal fa-plus"></i> Добавить </button> -->
         </div>
 
         <div class="merchant-table">
@@ -14,12 +14,13 @@
                     <tr>
                         <td>ID</td>
                         <td>Название</td>
+                        <td>Артикул</td>
                         <td>Источник</td>
-                        <td>Дата</td>
-                        <td>Стадия</td>
-                        <td>Сумма</td>
-                        <td class="merchant-table-unload-head">Выгружен</td>
-                        <td class="merchant-table-unload-head">Завершен</td>
+                        <td>Цена</td>
+                        <td>Остаток</td>
+                        <td>Последнее обновление</td>
+                        <!-- <td class="merchant-table-unload-head">Выгружен</td>
+                        <td class="merchant-table-unload-head">Завершен</td> -->
                         <!-- <td class="merchant-table-button-head">-</td> -->
 
                     </tr>
@@ -30,13 +31,14 @@
                         :key = 'index'
                     >
                         <td>{{item.id}}</td>
-                        <td>{{item.title}}</td>
-                        <td>{{item.source | localed}}</td>
-                        <td>{{item.source_order_created.slice(0,10).replace(/-/g, '.')}}</td>
-                        <td>{{item.stage}}</td>
-                        <td class="merchant-table-money">{{item.total_price.toString() | cash}} ₸</td>
-                        <td class="merchant-table-unload"> <i class="fal fa-check check-icon" v-if='item.synced === 1'></i></td>
-                        <td class="merchant-table-unload"><i class="fal fa-check check-icon" v-if='item.complete !== 0'></i></td>
+                        <td class="products-table-name">{{item.name}}</td>
+                        <td>{{item.article}}</td>
+                        <td>Kaspi</td>
+                        <td>{{item.price.toString() | cash}} ₸</td>
+                        <td>{{item.rest}}</td>
+                        <td>{{item.updated_at}}</td>
+                        <!-- <td class="merchant-table-unload"> <i class="fal fa-check check-icon" v-if='item.synced === 1'></i></td>
+                        <td class="merchant-table-unload"><i class="fal fa-check check-icon" v-if='item.complete !== 0'></i></td> -->
                         <!-- <td class="merchant-table-button-wrapper">
                             <div class="merchant-table-button-inner"
                                 v-click-outside="uploadHide"
@@ -123,7 +125,7 @@ export default {
         },
         async load() {
             this.offset +=15
-            const data = await this.$store.dispatch('orders/GET_ORDERS', this.offset)
+            const data = await this.$store.dispatch('products/GET_PRODUCTS', this.offset)
             console.log(data);
             if(data.status === 'success'){
                 data.data.map (item => {
@@ -339,6 +341,9 @@ table tbody tr {
     cursor: pointer;
 }
 table tbody tr:hover {background: #e8f6ff;}
+.products-table-name {
+  max-width: 400px;
+}
 @media screen and (max-width: 1366px) {
     table thead tr {
         font-size: 14px;

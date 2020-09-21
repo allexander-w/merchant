@@ -5,6 +5,8 @@
         </div>
 
         <div class="sources-wrapper">
+            <div v-if="load" class="sources-card loader"></div>
+            <div v-if="load" class="sources-card loader"></div>
             <div class="sources-card" 
                 v-for = '(source, index) in sources'
                 :key= 'index'
@@ -27,7 +29,8 @@ export default {
     middleware: ['auth', 'merchant'],
     layout: 'main',
     data: () => ({
-        sources: []
+        sources: [],
+        load: false
     }),
     methods: {
         plug(source) {
@@ -35,8 +38,10 @@ export default {
         }
     },
     async mounted() { 
+        this.load = true
         this.sources = await (await this.$store.dispatch('markets/GET_MARKETS')).data
         console.log(this.sources)
+        this.load = false
     }
 }
 </script>

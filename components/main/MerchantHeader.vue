@@ -13,6 +13,14 @@
         </div>
 
         <div class="merch-header-dropdowns">
+            <div class="merch-hidden-menu" @click='isMobileSidebar = true'>
+                <i class="fal fa-bars menu-bar-icon"></i>
+            </div>
+            <transition name ='hidemenu'>
+                <div class="merch-mobile-sidebar" v-if='isMobileSidebar'>
+                    <span @click='isMobileSidebar = false'>close</span>
+                </div>
+            </transition>
             <div class="merch-header-dropdown-cash-wrapper" v-click-outside="hideCash">
                 <div class="merch-header-dropdown-cash" :class="{'active-dropdown': isOpenCash}"  @click="isOpenCash = true">
                     <i class="fas fa-tenge dropdown-icon"></i> <span class="merch-header-dropdown-text">Баланс: {{balance.toString() | cash}} Т </span> <i class="fas fa-caret-down"></i>
@@ -70,6 +78,10 @@ export default {
             {id: 1, name: 'Заказы', active: true, path: '/merchant/orders', exact: true},
             {id: 2, name: 'Источники', active: false, path: '/merchant/orders/sources', exact: false},
         ],
+        productsMenu: [
+            {id: 1, name: 'Товары', active: true, path: '/merchant/products', exact: true},
+            {id: 2, name: 'Источники', active: false, path: '/merchant/products/sources', exact: false},
+        ],
         userMenu: [
             {id: 1, name: 'Профиль', active: true, path: '/merchant/user', exact: true},
             {id: 2, name: 'Ключи API', active: false, path: '/merchant/user/apikeys', exact: false},
@@ -88,10 +100,12 @@ export default {
         userData: [
             {id: 1, name: 'Профиль компании', path: '/merchant/user'},
             {id: 2, name: 'Баланс и платежи', path: '/merchant/user'},
+            {id: 3, name: 'Настройки', path: '/merchant/settings'},
         ],
         isOpenCash: false,
         isOpenName: false,
-        balance: 0
+        balance: 0,
+        isMobileSidebar: false
     }),
     directives: {
         ClickOutside
@@ -105,11 +119,15 @@ export default {
             if ( this.$route.name.includes('merchant-orders') ) { return this.ordersMenu }
             if ( this.$route.name.includes('merchant-partners') ) { return this.partnersMenu }
             if ( this.$route.name.includes('merchant-user') ) { return this.userMenu }
+            if ( this.$route.name.includes('merchant-products') ) { return this.productsMenu }
+
+            
 
             return this.ordersMenu
         }
     },
     methods: {
+        
         selectHandler(item) {
             this.menu.map(item => item.active = false)
             item.active = true
@@ -130,6 +148,17 @@ export default {
 </script>
 
 <style lang="scss">
+.merch-hidden-menu {
+    display: none;
+    width: 72px;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.menu-bar-icon {
+    font-size: 24px;
+}
 .merch-header {
     display: flex;
     justify-content: space-between;
@@ -274,5 +303,73 @@ export default {
 }
 .last-btn-dropdown {
     border-top: 1px solid rgba(#0E6CDD, .1);
+}
+.merch-mobile-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    width: 100%;
+    height: 100vh;
+    background-color: #ccc;
+    z-index: 100;
+}
+
+.hidemenu-enter-active, .hidemenu-leave-active {
+    transition: all .3s ease-out;
+}
+.hidemenu-enter {
+    transform: scale(0, 1);
+    transform-origin: left;
+    opacity: 0;
+}
+.hidemenu-leave {
+    transform: scale(1, 1);
+    transform-origin: right;
+    opacity: 1;
+}
+.hidemenu-leave-to {
+    transform: scale(0, 1);
+    transform-origin: right;
+    opacity: 0;
+}
+
+
+// 1090 TEST
+@media screen and (max-width: 768px) {
+    .merch-header {
+        margin-bottom: 56px;
+    }
+    .merch-header-dropdown-cash-wrapper {
+        display: none;
+    }
+    .merch-header-dropdown-name-wrapper {
+        display: none;
+    }
+    .merch-hidden-menu {
+        display: flex;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .merch-header-dropdown-text {
+        padding: 0 8px;
+        font-size: 14px;
+    }   
+    .merchant-search-input-wrapper {
+        display: flex;
+    }
+    .merch-header-link {
+        height: 56px;
+    }
+    .merch-header-links {
+        padding-left: 16px;
+        position: absolute;
+        top: 80px;
+        max-width: 100%;
+        overflow-x: auto;
+    }
 }
 </style>

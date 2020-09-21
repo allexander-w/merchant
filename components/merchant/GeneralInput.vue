@@ -6,7 +6,7 @@
             </p>
             <div class="more-functional" v-if='func'>
                 <div v-if='!button' class="icon" @click='copyText'> <i class="fal fa-copy general-input-icon"></i> </div>
-                <button v-else class="standart-btn yellow-standart-button general-input-btn">Подключить</button>
+                <button v-else class="standart-btn yellow-standart-button general-input-btn" @click = 'eventButton'>Подключить</button>
             </div>
             <div v-if='inputType==="password"' class="icon" @click='showPass'> <i class="far fa-eye general-input-icon"></i> </div>
     </div>
@@ -119,7 +119,11 @@ export default {
                 }
             })
              this.iconInfo = false
+        },
+        eventButton() {
+            this.$emit('buttonHandler')
         }
+        
     }
 }
 </script>

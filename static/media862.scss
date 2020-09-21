@@ -1,0 +1,150 @@
+@media screen and (max-width: 768px){ // 862
+  .header-navigation {
+    display: none;
+  }
+  .retail-header-title {
+    font-size: 42px;
+    line-height: 56px;
+  }
+  .retail-header {
+    padding-bottom: 48px;
+  }
+  .retail-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 88px 0;
+  }
+  .retail-item {
+    margin: 24px auto; 
+  }
+  .order-header-item {
+    margin: 0 auto;
+    max-width: calc(48px * 7);
+  }
+  .order-header {
+    flex-direction: column;
+    margin-bottom: 48px;
+  }
+  .order-view-wrapper {
+    max-width: calc(64px * 9);
+    margin: 0 auto;
+  }
+  .order-view {
+    display: block;
+    width: 100%;
+  }
+  .image-body {
+    display: block;
+    margin: 0 auto;
+  }
+  .retail-orders {
+    padding-bottom: 48px;
+  }
+  .retail-services-info-wrapper {
+    display: block;
+  }
+  .retail-services-info-wrapper {
+    display: block;
+  }
+  .retail-services-info {
+    max-width: calc(48px * 9);
+    margin: 0 auto;
+    text-align: center;
+  }
+  .services-blocks-wrapper {
+    flex-wrap: wrap;
+    max-width: calc(64px*7);
+    margin: 0 auto;
+  }
+  .retail-plans-cards {
+    flex-direction: column;
+  }
+  .fast-start-steps {
+    display: block;
+  }
+  .fast-start-step {
+    margin: 24px 0;
+  }
+  .retail-plans-card {
+    width: 260px;
+    margin: 24px auto;
+  }
+  .select-header {
+    width: calc(304px - 140px);
+  }
+  .retail-plans-card-button {
+    width: calc(303px - 140px);
+  }
+  .retail-payback-cards {
+    padding: 0;
+  }
+  .retail-reviews-text-value {
+    padding: 0;
+  }
+  .retail-reviews-companies {
+    padding: 0;
+  }
+  .select-dropdown {
+    width: calc(304px - 140px);
+  }
+  .container {
+    max-width: calc(32px * 24);
+  }
+  .main-title {
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 50px;
+    color: #333;
+}
+  .retail-footer-title {
+    color: #fff;
+  }
+  .retail-footer-underfooter {
+    display: block;
+  }
+  .services-blocks-wrapper {
+    display: block; 
+  }
+  .services-block {
+    margin: 24px auto;
+    &:nth-child(3n) {
+      margin: 0 auto;
+  }
+  }
+  .right-underfooter {
+    margin-top: 32px;
+  }
+
+  // MERCHANT INNER
+
+  .merchant-index-card {
+    min-width: 400px;
+  }
+  .merchant-index-add {
+    min-width: 288px;
+  }
+  .merchant-create-card {
+    min-width: 600px;
+  }
+  .sources-card {
+    min-width: 288px;
+  }
+
+  // TEST 
+
+  .main-layout {
+    grid-template: 100vh / 100%;
+  }
+  .main-header {
+    display: none;
+  }
+  .merchant-table {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .merch-header-links {
+    position: absolute;
+    top: 80px;
+  }
+}

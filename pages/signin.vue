@@ -20,6 +20,9 @@
         </div>
 
         <button @click='signin' class="yellow-standart-button standart-btn signin-btn">Войти</button>
+        <transition name='message'>
+            <Message v-if='error' />
+        </transition>
     </div>
 </template>
 
@@ -27,14 +30,16 @@
 import { required, minLength, email } from 'vuelidate/lib/validators'
 import GeneralInput from '@/components/merchant/GeneralInput'
 import Checkbox from '@/components/merchant/Checkbox'
+import Message from '@/components/Message'
 
 export default {
     middleware: 'trueauth',
     layout: 'auth',
-    components: {GeneralInput, Checkbox},
+    components: {GeneralInput, Checkbox, Message},
     data: () => ({
         email: '',
-        password: ''
+        password: '',
+        error: false
     }),
     validations:{
         email: {required, email},
@@ -52,7 +57,15 @@ export default {
                 password: this.password
             }
             const status = await this.$store.dispatch('auth/SIGN_IN', formData)
-            status === 'success' ? this.$router.push('/merchant') : console.log('Ошибка');
+            // status === 'success' ? ( )
+            if(status === 'success'){
+                 this.$router.push('/merchant')
+            } else {
+                this.error = true
+                setTimeout(()=> {
+                    this.error = false
+                }, 2500)
+            }
         }
     }
 }
